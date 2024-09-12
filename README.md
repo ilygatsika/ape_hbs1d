@@ -1,6 +1,6 @@
 # ape_hbs1d
 
-Julia code for the a posteriori estimation of Hermite basis set errors on a toy model in 1D. This code is used in our paper _A posteriori error estimates for Schrödinger operators discretized with linear combinations of atomic orbital_ available on [arXiv](pending).
+Julia code for the a posteriori estimation of Hermite-Gaussian basis set errors on a toy model in 1D. This code is used in our paper _A posteriori error estimates for Schrödinger operators discretized with linear combinations of atomic orbitals_ available on [arXiv](pending).
 
 ## Requirements
 
