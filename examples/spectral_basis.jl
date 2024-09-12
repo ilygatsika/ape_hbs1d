@@ -49,7 +49,12 @@ if !isfile("$(output_dir)/spectral.json")
         println("======= J=($K,$K)")
     
         # compute partitions on domains
-        local cH, Ω, Ω1, Ω2, Ω∞ = init_subdomains(mol, ℓ, σ, σ1, σ2, σ∞, K, Ng, FD_grid) 
+        local cH, Ω, Ω1, Ω2, Ω∞ = init_subdomains(mol, ℓ, σ, σ1, σ2, σ∞, K, Ng, FD_grid)
+
+        # print max residual error of J eigenpairs
+        λK, vK = Ω1.modes
+        resid_K = maximum([norm(λK[kk] * vK[:,kk] - Ω1.H * vK[:,kk]) for kk in 1:K])
+        println("atomic problem maximum residual=$resid_K")
 
         # reference solution of eigenproblem
         local μ1_FD, μ2_FD, u_FD = test_eigenpb(mol, Ω, Ng, FD_grid)
