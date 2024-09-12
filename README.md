@@ -33,6 +33,6 @@ Mi-Song Dupuy (Sorbonne Université), Geneviève Dusson (Université de Franche 
 
 ## Credits
 
-This code heavily uses modified routines originally found in the git repo [gkemlin/1D_basis_optimization](https://github.com/gkemlin/1D_basis_optimization.git) from the author Gaspard Kemlin.
+This code heavily uses modified routines originally found in the git repo `gkemlin/1D_basis_optimization` (https://github.com/gkemlin/1D_basis_optimization.git) from the author Gaspard Kemlin.
 
 Support of the European Research Council (ERC) under the European Union’s Horizon 2020 research and innovation programme (grant agreement EMC2 No 810367).
