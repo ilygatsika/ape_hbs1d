@@ -23,6 +23,24 @@ include("finite_diff_solver.jl")
         - computation of dual norm of residual
 """
 
+# Public 
+export Molecule
+export subdomain_constant
+export init_subdomains_omega
+export init_subdomains
+export test_source_pb
+export test_eigenpb
+export spectral_basis
+export hermite_solver
+export hermite_eigensolver
+export dual_norm_spectral
+export decompose_dual_norm
+export estimator_source_pb
+export estimator_eigenvector
+export estimator_eigenvalue
+export gap_constant_1
+export gap_constant_2
+
 struct Molecule
     R::Float64    # atoms at -R (atom 1) and +R (atom 2)
     z1::Float64   # nuclear charge of atom 1
@@ -193,8 +211,8 @@ function init_subdomains(mol, ℓ, σ, σ1, σ2, σ∞, K, Ng, grid)
 
 
     # initialize K-spectral basis
-    modes1 = spectral_basis(mol, K, VΩ1, σ1, grid)
-    modes2 = spectral_basis(mol, K, VΩ2, σ2, grid)
+    modes1 = spectral_basis(mol, K, VΩ1, σ1, Ng, grid)
+    modes2 = spectral_basis(mol, K, VΩ2, σ2, Ng, grid)
     
     λ,v = modes1
     #println("spectral ε $(λ[1]) $(λ[K])")
@@ -254,7 +272,7 @@ end
 Return normalized spectral basis of size K 
 for operator evaluated on grid
 """
-function spectral_basis(mol, K, V, σ, grid)
+function spectral_basis(mol, K, V, σ, Ng, grid)
 
     λ,v = exact_eigensolver(Ng, V, σ, grid, nvals=K)
     x_range, δx = grid
