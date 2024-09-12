@@ -1,7 +1,26 @@
 using LinearAlgebra
 using ForwardDiff
-using Crayons.Box
 using KrylovKit
+
+"""
+    Various utility functions
+        - definition of finite difference grid
+        - definition of nuclear potentials ...
+"""
+
+"""
+Finite difference grid definition
+"""
+function discretize_space(Ng, box_size)
+
+    # uniform grid
+    x_range = LinRange(-box_size, box_size, Ng)
+    
+    # discretization step
+    δx = x_range[2] - x_range[1]
+    
+    (x_range, δx)
+end
 
 """
 n-oder derivative interface with ForwardDiff

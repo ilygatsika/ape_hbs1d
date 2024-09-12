@@ -2,6 +2,11 @@ using Polynomials, SpecialPolynomials
 import Polynomials: basis
 
 """
+    Returns basis functions in analytical form.
+    Note that everything is defined in one dimension.
+"""
+
+"""
 Gaussian type basis. Return as functions of x.
 """
 function simple_gaussian_basis(σ)

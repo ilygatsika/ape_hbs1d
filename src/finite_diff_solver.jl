@@ -1,25 +1,17 @@
-#include("utils.jl")
 using LinearAlgebra
 
 """
-Linear Schrödinger type problem 
-H = - (1/2) Δ + V + σ
-where
-Δ     Laplacian in 1D
-V     potential
-σ     shift 
+    Finite difference solver for
+     - source problems
+     - eigenvalue problems
+
+    of linear Schrödinger type operator
+        H = - (1/2) Δ + V + σ
+    where
+    Δ     Laplacian in 1D
+    V     potential
+    σ     shift 
 """
-
-function discretize_space(Ng, box_size)
-
-    # uniform grid
-    x_range = LinRange(-box_size, box_size, Ng)
-    
-    # discretization step
-    δx = x_range[2] - x_range[1]
-    
-    (x_range, δx)
-end
 
 """
 Resolution by finite differences for source problem
