@@ -25,7 +25,7 @@ Pkg.test()
 include("run.jl")
 ```
 
-This program runs all calculations at once, stores results in json format and then produces figures placed in the `img` directory. Note that the `out` directory of the present git repo already contains all precalculated results.  Running all the computations from scratch takes around 30 minutes. To configure your own graphic display options used for plots, you can modify the `common.jl` file.
+This program runs all calculations at once, stores results in json format and then generates figures in the `img` directory. Note that the `out` directory of the present git repo already contains all precalculated results.  Running all the computations from scratch takes around 30 minutes. To configure your own graphic display options used for plots, you can modify the `common.jl` file.
 
 ## Authors
 
@@ -35,4 +35,4 @@ Mi-Song Dupuy (Sorbonne Université), Geneviève Dusson (Université de Franche 
 
 This code heavily uses modified routines originally found in the git repo [gkemlin/1D_basis_optimization](https://github.com/gkemlin/1D_basis_optimization.git) from the author Gaspard Kemlin.
 
-
+Support of the European Research Council (ERC) under the European Union’s Horizon 2020 research and innovation programme (grant agreement EMC2 No 810367).
