@@ -141,34 +141,31 @@ eigv_est = reshape(data["eigv_est"], (nb_ℓ, nb_tests))
 # ##################
 
 # Error convergence for source problem wrt Hermite basis size
-#PyPlot.title("source problem")
-PyPlot.plot(Nb_list, Herr_src[1,:], marker="s", color="blue", linewidth=2, label=L"$\|u-u_N\|_A$")
-m = ["o", "x", "^", "*","d"]
-for i in 1:nb_ℓ
-    PyPlot.plot(Nb_list, Hest_src[i,:], marker=m[i],  label=L"$2\ell=%$(2*vec_ℓ[i])$")
+PyPlot.plot(Nb_list, Herr_src[1,:], marker="x", markevery=3, label=L"$\|u-u_N\|_A$")
+for i in 1:nb_ℓ-1
+    PyPlot.plot(Nb_list, Hest_src[i,:], label=L"est. $\ell=%$(vec_ℓ[i])$")
 end
-PyPlot.ylabel("discr. error")
+PyPlot.ylabel("approx. error")
 PyPlot.xlabel(L"N"*" basis functions")
 PyPlot.yscale("log")
-PyPlot.legend()
+PyPlot.grid(color="#EEEEEE")
+PyPlot.legend(loc="upper right")
 PyPlot.savefig("$(figure_dir)/src_pb.pdf")
 PyPlot.close()
 
 # Error convergence for eigval problem wrt Hermite basis size
-#PyPlot.title("eigenvalue problem")
-#PyPlot.title(L"$z_1=z_2=1,\sigma=4,\sigma_1=\sigma_2=3$")
-PyPlot.plot(Nb_list, Herr_eig[1,:], marker="s", color="blue", linewidth=2, label=L"$\|\phi_1 - \phi_{1N}\|_A$")
-m = ["o", "x", "^", "*","d"]
-for i in 1:nb_ℓ
-    PyPlot.plot(Nb_list, Hest_eig[i,:], marker=m[i], label=L"$2\ell=%$(2*vec_ℓ[i])$")
+PyPlot.plot(Nb_list, Herr_eig[1,:], marker="x", markevery=3, label=L"$\|\phi_1 - \phi_{1N}\|_A$")
+for i in 1:nb_ℓ-1
+    PyPlot.plot(Nb_list, Hest_eig[i,:], label=L"est. $\ell=%$(vec_ℓ[i])$")
 end
-PyPlot.ylabel("discr. error")
+PyPlot.ylabel("approx. error")
 PyPlot.xlabel(L"N"*" basis functions")
 PyPlot.yscale("log")
+PyPlot.grid(color="#EEEEEE")
+PyPlot.legend(loc="upper right")
 PyPlot.legend()
 PyPlot.savefig("$(figure_dir)/eig_pb.pdf")
 PyPlot.close()
-
 
 
 

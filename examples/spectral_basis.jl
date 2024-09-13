@@ -102,17 +102,17 @@ nsup = reshape(Float64.(data["nsup"]), (nb_K, nb_Nb))
 # Plot results
 # ##################
 
-cls = ["green", "magenta"]
-PyPlot.plot(Nb_list, ntrue[1,:], "-x", color="blue", label=L"$\|u_1-u_{1N}\|_{A^{-1}}$")
+PyPlot.plot(Nb_list, ntrue[1,:], marker="x", markevery=3, label=L"$\|\text{Res}_N\|^2_{A_1^{-1}}$")
 for i in 1:nb_K
     local K = vec_K[i]
-    PyPlot.plot(Nb_list, ninf[i,:], "-o", color=cls[i], label=L"J=%$(K,K)"*" min")
-    PyPlot.plot(Nb_list, nsup[i,:], "-^", color=cls[i], label=L"J=%$(K,K)"*" max")
+    PyPlot.plot(Nb_list, ninf[i,:], label="lower bound "*"($K)")
+    PyPlot.plot(Nb_list, nsup[i,:], label="upper bound "*"($K)")
 end
-PyPlot.ylabel("error")
+PyPlot.ylabel("dual norm of "*L"$A_1$")
 PyPlot.xlabel(L"N"*" basis functions")
+PyPlot.grid(color="#EEEEEE")
 PyPlot.yscale("log")
-PyPlot.legend()
+PyPlot.legend(bbox_to_anchor=(1.0, 1.05))
 PyPlot.savefig("$(figure_dir)/spectral.pdf")
 PyPlot.close()
-    
+

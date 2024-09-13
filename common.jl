@@ -14,20 +14,15 @@ figure_dir = "img"
 
 """
 .. then configure plot environment
+   user can customize plots to apply globally
 """
 
-# Format PyPlot
+# science is included in plt.style.available
+# in Python 3.10.12
+# science = pyimport("scienceplots")
+
+PyPlot.matplotlib."pyplot".style.use("science")
 rcParams = PyPlot.PyDict(PyPlot.matplotlib."rcParams")
-rcParams["font.size"] = 15
-rcParams["legend.fontsize"] = "medium"
-rcParams["lines.linewidth"] = 0.85
-#rcParams["pdf.use14corefonts"] = true
-rcParams["lines.markersize"] = 6
-rcParams["lines.markerfacecolor"] = "none"
-rcParams["legend.edgecolor"] = "k"
-rcParams["legend.labelspacing"] = 0.01
-rcParams["legend.fancybox"] = false
-rcParams["mathtext.fontset"] = "cm"
-rcParams["axes.labelpad"] = 1.4
-rcParams["axes.linewidth"] = 0.5
+rcParams["legend.labelspacing"] = 0.001
+
 

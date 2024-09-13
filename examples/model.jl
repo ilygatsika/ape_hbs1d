@@ -80,10 +80,10 @@ Vxx    = Float64.(data["Vxx"])
 # Plot results
 # ##################
 
-PyPlot.plot(xx, sol_FD, "-", color="magenta", label=L"u")
-PyPlot.plot(xx, u_FD, "-", color="blue", label=L"u_1")
-PyPlot.vlines(-R, 0, 0.045, color="k", linestyles="dashed")
-PyPlot.vlines(+R, 0, 0.045, color="k", linestyles="dashed")
+PyPlot.plot(xx, sol_FD, "-", label=L"u")
+PyPlot.plot(xx, u_FD, "-", label=L"\phi_1")
+PyPlot.vlines(-R, 0, 0.045, linestyles="dashed")
+PyPlot.vlines(+R, 0, 0.045, linestyles="dashed")
 PyPlot.annotate(L"-R", [-R,0])
 PyPlot.annotate(L"+R", [+R,0])
 PyPlot.xlabel(L"x")
