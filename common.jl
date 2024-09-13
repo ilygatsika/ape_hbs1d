@@ -19,6 +19,7 @@ figure_dir = "img"
 
 # science is included in plt.style.available
 # in Python 3.10.12
+# but other versions might need:
 # science = pyimport("scienceplots")
 
 PyPlot.matplotlib."pyplot".style.use("science")
