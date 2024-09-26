@@ -105,8 +105,8 @@ nsup = reshape(Float64.(data["nsup"]), (nb_K, nb_Nb))
 PyPlot.plot(Nb_list, ntrue[1,:], marker="x", markevery=3, label=L"$\|\text{Res}_N\|^2_{A_1^{-1}}$")
 for i in 1:nb_K
     local K = vec_K[i]
-    PyPlot.plot(Nb_list, ninf[i,:], label="lower bound "*"($K)")
-    PyPlot.plot(Nb_list, nsup[i,:], label="upper bound "*"($K)")
+    PyPlot.plot(Nb_list, ninf[i,:], marker="*", markevery=3, label="lower bound "*"($K)")
+    PyPlot.plot(Nb_list, nsup[i,:], marker="*", markevery=3, label="upper bound "*"($K)")
 end
 PyPlot.ylabel("dual norm of "*L"$A_1$")
 PyPlot.xlabel(L"N"*" basis functions")

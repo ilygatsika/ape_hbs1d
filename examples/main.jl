@@ -143,7 +143,9 @@ eigv_est = reshape(data["eigv_est"], (nb_ℓ, nb_tests))
 # Error convergence for source problem wrt Hermite basis size
 PyPlot.plot(Nb_list, Herr_src[1,:], marker="x", markevery=3, label=L"$\|u-u_N\|_A$")
 for i in 1:nb_ℓ-1
-    PyPlot.plot(Nb_list, Hest_src[i,:], label=L"est. $\ell=%$(vec_ℓ[i])$")
+    if (i != 3)
+        PyPlot.plot(Nb_list, Hest_src[i,:], marker="^", markevery=3, label=L"est. $\ell=%$(2*vec_ℓ[i])$")
+    end
 end
 PyPlot.ylabel("approx. error")
 PyPlot.xlabel(L"N"*" basis functions")
@@ -154,16 +156,24 @@ PyPlot.savefig("$(figure_dir)/src_pb.pdf")
 PyPlot.close()
 
 # Error convergence for eigval problem wrt Hermite basis size
-PyPlot.plot(Nb_list, Herr_eig[1,:], marker="x", markevery=3, label=L"$\|\phi_1 - \phi_{1N}\|_A$")
+PyPlot.plot(Nb_list, Herr_eig[1,:], marker="x", markevery=3, label=L"$\|\varphi_1 - \varphi_{1N}\|_A$")
 for i in 1:nb_ℓ-1
-    PyPlot.plot(Nb_list, Hest_eig[i,:], label=L"est. $\ell=%$(vec_ℓ[i])$")
+    if ((i == 1) || (i == 4)) 
+        PyPlot.plot(Nb_list, Hest_eig[i,:], marker="^", markevery=3, label=L"est. $\ell=%$(2*vec_ℓ[i])$")
+    end
 end
+PyPlot.plot(Nb_list, eigv_err[1,:], marker="s", markevery=3, linestyle=:dashed, label=L"$\lambda_{1N} - \lambda_1$")
+i = nb_ℓ - 1
+PyPlot.plot(Nb_list, eigv_est[i,:], marker="*", markevery=3, linestyle=:dashed, label=L"est. $\ell=%$(2*vec_ℓ[i])$")
 PyPlot.ylabel("approx. error")
 PyPlot.xlabel(L"N"*" basis functions")
 PyPlot.yscale("log")
 PyPlot.grid(color="#EEEEEE")
-PyPlot.legend(loc="upper right")
-PyPlot.legend()
+ax = PyPlot.gca()
+handles, labels = ax.get_legend_handles_labels()
+first_legend = ax.legend(handles=[handles[1],handles[4]], loc="upper right")
+second_legend = plt.legend(handles=[handles[2],handles[3],handles[5]], loc="lower left")
+ax.add_artist(first_legend)
 PyPlot.savefig("$(figure_dir)/eig_pb.pdf")
 PyPlot.close()
 
