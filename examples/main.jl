@@ -147,7 +147,6 @@ for i in 1:nb_ℓ-1
         PyPlot.plot(Nb_list, Hest_src[i,:], marker="^", markevery=3, label=L"est. $\ell=%$(2*vec_ℓ[i])$")
     end
 end
-PyPlot.ylabel("approx. error")
 PyPlot.xlabel(L"N"*" basis functions")
 PyPlot.yscale("log")
 PyPlot.grid(color="#EEEEEE")
@@ -165,7 +164,6 @@ end
 PyPlot.plot(Nb_list, eigv_err[1,:], marker="s", markevery=3, linestyle=:dashed, label=L"$\lambda_{1N} - \lambda_1$")
 i = nb_ℓ - 1
 PyPlot.plot(Nb_list, eigv_est[i,:], marker="*", markevery=3, linestyle=:dashed, label=L"est. $\ell=%$(2*vec_ℓ[i])$")
-PyPlot.ylabel("approx. error")
 PyPlot.xlabel(L"N"*" basis functions")
 PyPlot.yscale("log")
 PyPlot.grid(color="#EEEEEE")
