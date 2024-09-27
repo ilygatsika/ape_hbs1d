@@ -165,7 +165,7 @@ function init_subdomains_omega(mol, σ, K, Ng, grid)
     # Check positive-definiteness
     @assert(isposdef(HΩ))
   
-    cH = 1/eigvals(HΩ)[1] # constant of Assumption 3
+    cH = 1/sqrt(eigvals(HΩ)[1]) # constant of Assumption 3
     Ω  = Subdomain(σ , x_range, HΩ , VΩ , nothing)
 
     (cH, Ω)
