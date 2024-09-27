@@ -217,7 +217,7 @@ function init_subdomains(mol, ℓ, σ, σ1, σ2, σ∞, K, Ng, grid)
     λ,v = modes1
     #println("spectral ε $(λ[1]) $(λ[K])")
 
-    cH = 1/eigvals(HΩ)[1] # constant of Assumption 3
+    cH = 1/sqrt(eigvals(HΩ)[1]) # constant of Assumption 3
     Ω  = Subdomain(σ , x_range, HΩ , VΩ , nothing)
     Ω1 = Subdomain(σ1, pΩ1    , HΩ1, VΩ1, modes1 )
     Ω2 = Subdomain(σ2, pΩ2    , HΩ2, VΩ2, modes2 )
