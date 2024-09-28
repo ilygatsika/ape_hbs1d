@@ -204,7 +204,7 @@ function init_subdomains(mol, ℓ, σ, σ1, σ2, σ∞, K, Ng, grid)
     # Plot partition
     PyPlot.plot(x_range, pΩ1.(x_range), label=L"$p_1$")
     PyPlot.plot(x_range, pΩ2.(x_range), label=L"$p_2$")
-    PyPlot.plot(x_range, pΩ∞.(x_range), label=L"$p_∞$")
+    PyPlot.plot(x_range, pΩ∞.(x_range), label=L"$p_\infty$")
     PyPlot.legend()
     PyPlot.savefig("img/part.png")
     PyPlot.close()

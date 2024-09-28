@@ -25,5 +25,6 @@ figure_dir = "img"
 PyPlot.matplotlib."pyplot".style.use("science")
 rcParams = PyPlot.PyDict(PyPlot.matplotlib."rcParams")
 rcParams["legend.labelspacing"] = 0.001
+#rcParams["lines.markersize"] = 3.5
 
 
