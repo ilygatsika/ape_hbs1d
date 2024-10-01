@@ -116,11 +116,11 @@ function subdomain_constant(subdomains, ℓ, cH, grid; with_plot=false, filename
     p∞nz = x -> Ω∞.pfun(x) < eps ? 1 : Ω∞.pfun(x)
 
     # Define function to maximize
-    F = x -> max(- (1/4) * D(Ω1.pfun,2)(x) + D(Ω1.pfun,1)(x) ^ 2 / (4.0 * p1nz(x)) + 
+    F = x -> max(- (1/4) * D(Ω1.pfun,2)(x) + D(Ω1.pfun,1)(x) ^ 2 / (8.0 * p1nz(x)) + 
                 Ω1.V(x) * (Ω1.pfun(x) - 1.0) + (Ω1.σ - σ) * Ω1.pfun(x) - 
-                 (1/4) * D(Ω2.pfun,2)(x) + D(Ω2.pfun,1)(x) ^ 2 / (4.0 * p2nz(x)) + 
+                 (1/4) * D(Ω2.pfun,2)(x) + D(Ω2.pfun,1)(x) ^ 2 / (8.0 * p2nz(x)) + 
                 Ω2.V(x) * (Ω2.pfun(x) - 1.0) + (Ω2.σ - σ) * Ω2.pfun(x) - 
-                 (1/4) * D(Ω∞.pfun,2)(x) + D(Ω∞.pfun,1)(x) ^ 2 / (4.0 * p∞nz(x)) + 
+                 (1/4) * D(Ω∞.pfun,2)(x) + D(Ω∞.pfun,1)(x) ^ 2 / (8.0 * p∞nz(x)) + 
                 Ω∞.V(x) * (Ω∞.pfun(x) - 1.0) + (Ω∞.σ - σ) * Ω∞.pfun(x), 
                 0.0)
 

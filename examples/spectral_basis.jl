@@ -102,7 +102,7 @@ nsup = reshape(Float64.(data["nsup"]), (nb_K, nb_Nb))
 # Plot results
 # ##################
 
-PyPlot.plot(Nb_list, ntrue[1,:], marker="x", markevery=3, label=L"$\|\text{Res}_N\|^2_{A_1^{-1}}$")
+PyPlot.plot(Nb_list, ntrue[1,:], marker="x", markevery=3, label=L"$\|\mathrm{Res}_N\|^2_{A_1^{-1}}$")
 for i in 1:nb_K
     local K = vec_K[i]
     PyPlot.plot(Nb_list, ninf[i,:], marker="*", markevery=3, label="lower bound "*"($K)")
