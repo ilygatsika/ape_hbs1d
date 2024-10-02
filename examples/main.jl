@@ -67,9 +67,10 @@ if !isfile("$(output_dir)/res_main.json")
         local sol_FD, rhs = test_source_pb(mol, Ω, Ω1, Ω2, Ng, FD_grid)
     
         # domain constant
-        cH = 1/sqrt(- 2 + σ) # use the practical one for H2+
+        Vlow = minimum((Ω.V).(FD_grid[1]))
+        cH = 1/sqrt(Vlow + σ) # use the practical one for H2+
         local c = subdomain_constant((Ω, Ω1, Ω2, Ω∞), ℓ, cH, FD_grid)
-        println("ℓ=($ℓ) λ1=($μ1_FD) cH=($cH) C=($c)")
+        println("ℓ=($ℓ) λ1=($μ1_FD) cH=($cH) Vlow=($Vlow) C=($c)")
 
         # Vary Hermite basis size
         for j in 1:nb_tests

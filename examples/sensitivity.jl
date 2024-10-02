@@ -74,7 +74,8 @@ if !isfile("$(output_dir)/sensitivity.json")
             # gap constant here = (1.0 - λ1N / μ2_FD)^2
             local γ = gap_constant_1(μ2_FD, λ_1N)
 
-            cA_prac = 1/sqrt(- 2 + σ) # practical for H2+
+            # not used for analysis here but just for comparison
+            cA_prac = 1/sqrt(minimum((Ω.V).(FD_grid[1])) + σ) # practical for H2+
             println("For σ=$σ | γ=$γ exact cA=$(cA) practical cA=$(cA_prac)")
 
             if ( j == nb_tests ) # saves result for larger Nb

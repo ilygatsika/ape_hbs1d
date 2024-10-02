@@ -23,7 +23,8 @@ figure_dir = "img"
 # science = pyimport("scienceplots")
 
 # uncomment this line to use scienceplots style
-# PyCall is often not working correctly
+# note that PyCall is often not working correctly
+# so this is the reason why this style is not the default
 #PyPlot.matplotlib."pyplot".style.use("science")
 
 rcParams = PyPlot.PyDict(PyPlot.matplotlib."rcParams")
