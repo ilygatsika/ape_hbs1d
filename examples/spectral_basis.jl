@@ -57,7 +57,7 @@ if !isfile("$(output_dir)/spectral.json")
         for j in 1:nb_tests
 
             Nb = Nb_list[j]
-            λ_1N, u_1N = hermite_eigensolver(mol, Ω.H, Nb, Nb, FD_grid)
+            λ_1N, λ_2N, u_1N = hermite_eigensolver(mol, Ω.H, Nb, Nb, FD_grid)
             local err = u_1N - u_FD
             Herr_ = √(err'Ω.H*err)
             @assert( Herr_ >= √(err'err) )

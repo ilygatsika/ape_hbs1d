@@ -25,7 +25,9 @@ Pkg.test()
 include("run.jl")
 ```
 
-This program runs all calculations at once, stores results in json format and then generates figures in the `img` directory. Note that the `out` directory of the present git repo already contains all precalculated results.  Running all the computations from scratch takes around 30 minutes. To configure your own graphic display options used for plots, you can modify the `common.jl` file.
+This program runs all calculations at once, stores results in json format and then generates figures in the `img` directory. Note that the `out` directory of the present git repo already contains all precalculated results.  Running all the computations from scratch takes around 30 minutes. 
+
+To configure your own graphic display options used for plots, you can modify the `common.jl` file. Note that the scienceplots style used in our paper is not the default one in the code.
 
 ## Authors
 

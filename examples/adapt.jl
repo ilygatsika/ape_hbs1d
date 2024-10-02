@@ -23,7 +23,7 @@ if !isfile("$(output_dir)/res_adapt$(tag).json")
     # ###################
     R  = 1.0                # -R and +R atomic positions
     V = V_Gigi(0.5)         # atomic potential
-    σ  = 7.0                # shifts
+    σ  = 9.0                # shifts so that -8 + shift > 0
     σ1 = 4.0
     σ2 = 4.0
     σ∞ = 1.0
@@ -63,7 +63,7 @@ if !isfile("$(output_dir)/res_adapt$(tag).json")
 
         global Nb1, Nb2
 
-        λ_1N, u_1N = hermite_eigensolver(mol, Ω.H, Nb1, Nb2, FD_grid)
+        λ_1N, λ_2N, u_1N = hermite_eigensolver(mol, Ω.H, Nb1, Nb2, FD_grid)
     
         local err = u_1N - u_FD
         Herrv = √(err'Ω.H*err)
@@ -97,7 +97,7 @@ if !isfile("$(output_dir)/res_adapt$(tag).json")
     for i in 1:nb_tests
     
         Nb = Nb_list[i]
-        λ_1N, u_1N = hermite_eigensolver(mol, Ω.H, Nb, Nb, FD_grid)
+        λ_1N, λ_2N, u_1N = hermite_eigensolver(mol, Ω.H, Nb, Nb, FD_grid)
         local err = u_1N - u_FD
         Herrv = √(err'Ω.H*err)
         @assert( Herrv >= √(err'err) )

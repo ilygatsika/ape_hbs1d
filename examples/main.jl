@@ -67,6 +67,7 @@ if !isfile("$(output_dir)/res_main.json")
         local sol_FD, rhs = test_source_pb(mol, Ω, Ω1, Ω2, Ng, FD_grid)
     
         # domain constant
+        cH = 1/sqrt(- 2 + σ) # use the practical one for H2+
         local c = subdomain_constant((Ω, Ω1, Ω2, Ω∞), ℓ, cH, FD_grid)
         println("ℓ=($ℓ) λ1=($μ1_FD) cH=($cH) C=($c)")
 
@@ -84,14 +85,14 @@ if !isfile("$(output_dir)/res_main.json")
             est = estimator_source_pb(c, dnorm_Res)
 
             # eigenproblem 
-            λ_1N, u_1N = hermite_eigensolver(mol, Ω.H, Nb, Nb, FD_grid)
+            λ_1N, λ_2N, u_1N = hermite_eigensolver(mol, Ω.H, Nb, Nb, FD_grid)
             err = u_1N - u_FD
             Herr_ = √(err'Ω.H*err)
             @assert( Herr_ >= √(err'err) )
             Res = λ_1N * u_1N - Ω.H * u_1N
             dnorm_Res = decompose_dual_norm(Res, Ω1, Ω2, Ω∞, Ng, FD_grid)
-            c1 = gap_constant_1(μ2_FD, λ_1N)
-            c2 = gap_constant_2(μ2_FD, λ_1N)
+            c1 = gap_constant_1(λ_2N, λ_1N)
+            c2 = gap_constant_2(λ_2N, λ_1N)
             est_ = estimator_eigenvector(c, c1, c2, μ1_FD, dnorm_Res)
 
             println("Nb=($Nb), gap const 1 $(c1) 2 $(c2)")

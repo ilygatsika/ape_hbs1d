@@ -22,9 +22,16 @@ figure_dir = "img"
 # but other versions might need:
 # science = pyimport("scienceplots")
 
-PyPlot.matplotlib."pyplot".style.use("science")
+# uncomment this line to use scienceplots style
+# PyCall is often not working correctly
+#PyPlot.matplotlib."pyplot".style.use("science")
+
 rcParams = PyPlot.PyDict(PyPlot.matplotlib."rcParams")
 rcParams["legend.labelspacing"] = 0.001
-#rcParams["lines.markersize"] = 3.5
+rcParams["lines.markersize"] = 3.5
+
+rcParams["font.family"] = "sans-serif"
+rcParams["mathtext.fontset"] = "dejavusans"
+rcParams["text.usetex"] = false
 
 

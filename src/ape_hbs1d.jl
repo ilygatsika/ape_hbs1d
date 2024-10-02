@@ -327,10 +327,10 @@ end
 """
 Hermite basis solver for eigenproblem 
 with Nb1 and Nb2 HB functions on atoms 1 and 2.
-Return first eigenvector evaluated on grid if nv=1
-otherwise nv=2 returns first and second eigenvalue only (no vecs).
+Return first eigenvector evaluated on grid
+plus first two eigenvalues.
 """
-function hermite_eigensolver(mol, H, Nb1, Nb2, grid; nv=1)
+function hermite_eigensolver(mol, H, Nb1, Nb2, grid)
     
     # create Hermite basis
     HB1 = centered_hermite_basis(+mol.R, Nb1, grid)
@@ -362,11 +362,7 @@ function hermite_eigensolver(mol, H, Nb1, Nb2, grid; nv=1)
     C_HB_rdc[P] = C_HB[:,1]
     u_1N = abs.(HB * C_HB_rdc)
 
-    if (nv == 1)
-        (μ_HB[1], u_1N)
-    elseif (nv == 2)
-        μ_HB[1:2]
-    end
+    (μ_HB[1], μ_HB[2], u_1N)
 
 end
 

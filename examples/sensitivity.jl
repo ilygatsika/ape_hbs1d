@@ -67,13 +67,15 @@ if !isfile("$(output_dir)/sensitivity.json")
 
             Nb = Nb_list[j]
             println("\n============ N=$Nb")
-            λ_1N, λ_2N = hermite_eigensolver(mol, Ω.H, Nb, Nb, FD_grid; nv=2)
+            λ_1N, λ_2N, v_1N = hermite_eigensolver(mol, Ω.H, Nb, Nb, FD_grid)
 
             println("Verify: |λ2 - λ2N|=$(abs(μ2_FD-λ_2N))")
 
-            # gap constant here = (1.0 - λ1N / μ2)^2
+            # gap constant here = (1.0 - λ1N / μ2_FD)^2
             local γ = gap_constant_1(μ2_FD, λ_1N)
-            println("For σ=$σ | γ=$γ cA=$(cA)")
+
+            cA_prac = 1/sqrt(- 2 + σ) # practical for H2+
+            println("For σ=$σ | γ=$γ exact cA=$(cA) practical cA=$(cA_prac)")
 
             if ( j == nb_tests ) # saves result for larger Nb
                 vec_γ[i] = γ
