@@ -4,7 +4,7 @@ Julia code for the a posteriori estimation of Hermite-Gaussian basis set errors 
 
 ## Requirements
 
-Julia (version >1.10.5) with the libraries:
+Julia version 1.11.4 with the libraries:
 - Test, BoundaryValueDiffEq for testing;
 - LinearAlgebra, Polynomials, SpecialPolynomials, KrylovKit, ForwardDiff for the computations;
 - JSON3 for saving results;
