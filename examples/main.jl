@@ -157,23 +157,36 @@ PyPlot.savefig("$(figure_dir)/src_pb.pdf")
 PyPlot.close()
 
 # Error convergence for eigval problem wrt Hermite basis size
-PyPlot.plot(Nb_list, Herr_eig[1,:], marker="x", markevery=3, label=L"$\|\varphi_1 - \varphi_{1N}\|_A$")
-for i in 1:nb_ℓ-1
-    if ((i == 1) || (i == 4)) 
-        PyPlot.plot(Nb_list, Hest_eig[i,:], marker="^", markevery=3, label=L"est. $\ell=%$(2*vec_ℓ[i])$")
-    end
-end
-PyPlot.plot(Nb_list, eigv_err[1,:], marker="s", markevery=3, linestyle=:dashed, label=L"$\lambda_{1N} - \lambda_1$")
-i = nb_ℓ - 1
-PyPlot.plot(Nb_list, eigv_est[i,:], marker="*", markevery=3, linestyle=:dashed, label=L"est. $\ell=%$(2*vec_ℓ[i])$")
+# Figure is splitted in two parts
+fig, (ax1, ax2) = PyPlot.subplots(nrows=2, ncols=1, sharex=true,
+                                  figsize=(4.0,4.2), gridspec_kw=["height_ratios"=>[1.5,1.5]])
+
+nb_size = size(Nb_list,1)
+PyPlot.xticks(1:3:nb_size, Nb_list[1:3:nb_size])
 PyPlot.xlabel(L"N"*" basis functions")
-PyPlot.yscale("log")
-PyPlot.grid(color="#EEEEEE")
-ax = PyPlot.gca()
-handles, labels = ax.get_legend_handles_labels()
-first_legend = ax.legend(handles=[handles[1],handles[4]], loc="upper right")
-second_legend = plt.legend(handles=[handles[2],handles[3],handles[5]], loc="lower left")
-ax.add_artist(first_legend)
+
+# Upper part: Eigenvectors
+ax1.plot(Herr_eig[1,:], marker="x", markevery=3, label=L"$\|\varphi_1 - \varphi_{1N}\|_A$")
+for i in 1:nb_ℓ-1
+    if (i==3) continue end
+    ax1.plot(Hest_eig[i,:], marker="^", markevery=3, label=L"est. $\ell=%$(2*vec_ℓ[i])$")
+end
+ax1.set_yscale("log")
+ax1.grid(color="#EEEEEE")
+ax1.legend()
+
+# Lower part: Eigenvalues
+ax2.plot(eigv_err[1,:], marker="s", markevery=3, linestyle=:dashed, label=L"$\lambda_{1N} - \lambda_1$")
+for i in 1:nb_ℓ-1
+    if (i==3) continue end
+    ax2.plot(eigv_est[i,:], marker="*", markevery=3, linestyle=:dashed, label=L"est. $\ell=%$(2*vec_ℓ[i])$")
+end
+ax2.set_yscale("log")
+ax2.grid(color="#EEEEEE")
+ax2.legend()
+
+PyPlot.tight_layout()
+PyPlot.subplots_adjust(wspace=0, hspace=0)
 PyPlot.savefig("$(figure_dir)/eig_pb.pdf")
 PyPlot.close()
 

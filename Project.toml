@@ -11,11 +11,13 @@ KrylovKit = "0b1a1467-8014-51b9-945f-bf0ae24f4b77"
 LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Polynomials = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
+PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
 PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"
 SpecialPolynomials = "a25cea48-d430-424a-8ee7-0d3ad3742e9e"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
+PyCall = "1.96.4"
 Statistics = "1.11.1"
 julia = "1.10.5"
