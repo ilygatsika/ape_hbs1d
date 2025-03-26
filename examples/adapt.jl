@@ -28,7 +28,7 @@ if !isfile("$(output_dir)/res_adapt$(tag).json")
     σ2 = 4.0
     σ∞ = 1.0
     K  = 17               # size of spectral basis
-    ℓ  = 0.05              # size of partition overlap
+    ℓ  = 0.3              # size of partition overlap
 
     # ###############################
     # Discretisation basis parameters
