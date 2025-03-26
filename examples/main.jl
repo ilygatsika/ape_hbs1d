@@ -75,9 +75,9 @@ if !isfile("$(output_dir)/res_main.json")
         println("ℓ=($ℓ) λ1=($μ1_FD) cH=($cH) Vlow=($Vlow) C=($c)")
        
         # use guaranteed lb of λ_2 (instead of λ_2N) (Remark 3.4)
-        μs_AB, μs_A, μs_B = wayl_lower_bound(V,z1,z2,R,σ,Ng,FD_grid)
+        μs_AB, μs_A, μs_B = weyl_lower_bound(V,z1,z2,R,σ,Ng,FD_grid)
         μ2_lb = μs_A[1] + μs_B[2]
-        println("Wayl's lower bound: λ2_lb=($μ2_lb) < λ2=($μ2_FD)")
+        println("Weyl's lower bound: λ2_lb=($μ2_lb) < λ2=($μ2_FD)")
         @assert( μ2_lb <= μ2_FD ) # Assumption 3.2
 
         # Vary Hermite basis size

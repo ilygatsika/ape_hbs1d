@@ -40,7 +40,7 @@ export estimator_eigenvector
 export estimator_eigenvalue
 export gap_constant_1
 export gap_constant_2
-export wayl_lower_bound
+export weyl_lower_bound
 
 struct Molecule
     R::Float64    # atoms at -R (atom 1) and +R (atom 2)
@@ -441,7 +441,7 @@ function estimator_eigenvalue(c, c1, dnorm_Res)
     (c * 1.0/c1 * r)
 end
 
-function wayl_lower_bound(V,z1,z2,R,σ,Ng,FD_grid)
+function weyl_lower_bound(V,z1,z2,R,σ,Ng,FD_grid)
 
     # use finite difference grid
     x_range, δx = FD_grid
