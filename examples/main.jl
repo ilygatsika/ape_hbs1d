@@ -71,6 +71,12 @@ if !isfile("$(output_dir)/res_main.json")
         cH = 1/sqrt(Vlow + σ) # use the practical one for H2+
         local c = subdomain_constant((Ω, Ω1, Ω2, Ω∞), ℓ, cH, FD_grid)
         println("ℓ=($ℓ) λ1=($μ1_FD) cH=($cH) Vlow=($Vlow) C=($c)")
+       
+        # use guaranteed lb of λ_2 (instead of λ_2N) (Remark 3.4)
+        μs_AB, μs_A, μs_B = wayl_lower_bound(Ω.V,z1,z2,R,σ,Ng,FD_grid)
+        μ2_lb = μs_A[1] + μs_B[2]
+        println("Wayl's lower bound: λ2_lb=($μ2_lb) < λ2=($μ2_FD)")
+        @assert( μ2_lb <= μ2_FD ) # Assumption 3.2
 
         # Vary Hermite basis size
         for j in 1:nb_tests
@@ -89,12 +95,13 @@ if !isfile("$(output_dir)/res_main.json")
             λ_1N, λ_2N, u_1N = hermite_eigensolver(mol, Ω.H, Nb, Nb, FD_grid)
             err = u_1N - u_FD
             Herr_ = √(err'Ω.H*err)
-            @assert( Herr_ >= √(err'err) )
+            @assert( Herr_ >= √(err'err) ) # Assumption 2.5
+            @assert( λ_1N <= μ2_lb ) # Assumption 3.2
             Res = λ_1N * u_1N - Ω.H * u_1N
             dnorm_Res = decompose_dual_norm(Res, Ω1, Ω2, Ω∞, Ng, FD_grid)
-            c1 = gap_constant_1(λ_2N, λ_1N)
-            c2 = gap_constant_2(λ_2N, λ_1N)
-            est_ = estimator_eigenvector(c, c1, c2, μ1_FD, dnorm_Res)
+            c1 = gap_constant_1(μ2_lb, λ_1N)
+            c2 = gap_constant_2(μ2_lb, λ_1N)
+            est_ = estimator_eigenvector(c, c1, c2, λ_1N, dnorm_Res)
 
             println("Nb=($Nb), gap const 1 $(c1) 2 $(c2)")
         

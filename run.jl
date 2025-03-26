@@ -17,3 +17,9 @@ include("examples/adapt.jl")
 newARGS = ["1.0", "3.0"] # = Z1 and Z2
 include("examples/adapt.jl")
 
+# Run [[extra]] simulations from Section 4.1.5.
+#newARGS = ["1.0", "1.0"] # = Z1 and Z2
+#include("examples/adapt_sensitivity.jl")
+#newARGS = ["1.0", "3.0"] # = Z1 and Z2
+#include("examples/adapt_sensitivity.jl")
+

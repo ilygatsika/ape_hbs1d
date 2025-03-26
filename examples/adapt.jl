@@ -28,7 +28,7 @@ if !isfile("$(output_dir)/res_adapt$(tag).json")
     σ2 = 4.0
     σ∞ = 1.0
     K  = 17               # size of spectral basis
-    ℓ  = 0.3              # size of partition overlap
+    ℓ  = 0.05              # size of partition overlap
 
     # ###############################
     # Discretisation basis parameters
@@ -75,7 +75,7 @@ if !isfile("$(output_dir)/res_adapt$(tag).json")
         c2 = gap_constant_2(μ2_FD, λ_1N)
         estv = estimator_eigenvector(c, c1, c2, μ1_FD, dnorm_Res)
     
-        #println("($Nb1) ($Nb2) ($Herrv) ($estv)")
+        println("$Nb1 $Nb2 $Herrv $estv | $(dnorm_Res[1]) $(dnorm_Res[2])")
 
         # increment Hermite basis size
         if dnorm_Res[1] > dnorm_Res[2]

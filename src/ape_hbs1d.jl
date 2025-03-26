@@ -40,6 +40,7 @@ export estimator_eigenvector
 export estimator_eigenvalue
 export gap_constant_1
 export gap_constant_2
+export wayl_lower_bound
 
 struct Molecule
     R::Float64    # atoms at -R (atom 1) and +R (atom 2)
@@ -430,14 +431,38 @@ function estimator_source_pb(c, dnorm_Res)
     √(c * r)
 end
 
-function estimator_eigenvector(c, c1, c2, μ1_FD, dnorm_Res) 
+function estimator_eigenvector(c, c1, c2, λ1, dnorm_Res) 
     r = sum(dnorm_Res)
-    √(c * 1.0/c1 * r + μ1_FD * c^2 * 1.0/c2^2 * r^2)
+    √(c * 1.0/c1 * r + λ1 * c^2 * 1.0/c2^2 * r^2)
 end
 
 function estimator_eigenvalue(c, c1, dnorm_Res) 
     r = sum(dnorm_Res)
     (c * 1.0/c1 * r)
+end
+
+function wayl_lower_bound(V,z1,z2,R,σ,Ng,FD_grid)
+
+    # use finite difference grid
+    x_range, δx = FD_grid
+
+    V1 = V_atom(V,z1,+R).(x_range)
+    V2 = V_atom(V,z2,-R).(x_range)
+    Lap = (1/δx)^2 * Δ(Ng)
+
+    # λ_1(A+B), λ_2(A+B)
+    vals,_ = eigen(Matrix(-(1/2)*Lap+Diagonal(V1+V2.+σ)))
+    vals_mol = vals[1:2]
+    
+    # λ_1(A), λ_2(A)
+    vals,_ = eigen(Matrix(-(1/4)*Lap+Diagonal(V1.+σ/2)))
+    vals_1 = vals[1:2]
+
+    # λ_1(A), λ_2(B)
+    vals,_ = eigen(Matrix(-(1/4)*Lap+Diagonal(V2.+σ/2)))
+    vals_2 = vals[1:2]
+
+    return (vals_mol, vals_1, vals_2)
 end
 
 end # module

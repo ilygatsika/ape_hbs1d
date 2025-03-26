@@ -48,6 +48,10 @@ B = - (1/4) * Lap + Diagonal(V1.(x_range) .+ σ/2)
 res = eigen(Matrix(B))
 println("-1/4Delta+V1+shift/2  $(res.values[1]) $(res.values[2])")
 
+B = - (1/4) * Lap + Diagonal(V2.(x_range) .+ σ/2) 
+res = eigen(Matrix(B))
+println("-1/4Delta+V2+shift/2  $(res.values[1]) $(res.values[2])")
+
 A1 = - (1/4) * Lap + Diagonal(V1.(x_range)) 
 res = eigen(Matrix(A1))
 println("-1/4Delta+V1          $(res.values[1]) $(res.values[2])")
