@@ -47,10 +47,12 @@ if !isfile("$(output_dir)/res_main.json")
     Herr_src = zeros(nb_ℓ, nb_tests) 
     Hest_src = zeros(nb_ℓ, nb_tests)
     Herr_eig = zeros(nb_ℓ, nb_tests) 
-    Hest_eig = zeros(nb_ℓ, nb_tests)
     eigv_err = zeros(nb_ℓ, nb_tests)
-    eigv_est = zeros(nb_ℓ, nb_tests)
-
+    Hest_eig_gua = zeros(nb_ℓ, nb_tests)
+    eigv_est_gua = zeros(nb_ℓ, nb_tests)
+    Hest_eig_nongua = zeros(nb_ℓ, nb_tests)
+    eigv_est_nongua = zeros(nb_ℓ, nb_tests)
+    
     # reference solution of eigenproblem
     local cH, Ω = init_subdomains_omega(mol, σ, K, Ng, FD_grid)
     μ1_FD, μ2_FD, u_FD = test_eigenpb(mol, Ω, Ng, FD_grid)
@@ -73,7 +75,7 @@ if !isfile("$(output_dir)/res_main.json")
         println("ℓ=($ℓ) λ1=($μ1_FD) cH=($cH) Vlow=($Vlow) C=($c)")
        
         # use guaranteed lb of λ_2 (instead of λ_2N) (Remark 3.4)
-        μs_AB, μs_A, μs_B = wayl_lower_bound(Ω.V,z1,z2,R,σ,Ng,FD_grid)
+        μs_AB, μs_A, μs_B = wayl_lower_bound(V,z1,z2,R,σ,Ng,FD_grid)
         μ2_lb = μs_A[1] + μs_B[2]
         println("Wayl's lower bound: λ2_lb=($μ2_lb) < λ2=($μ2_FD)")
         @assert( μ2_lb <= μ2_FD ) # Assumption 3.2
@@ -96,19 +98,34 @@ if !isfile("$(output_dir)/res_main.json")
             err = u_1N - u_FD
             Herr_ = √(err'Ω.H*err)
             @assert( Herr_ >= √(err'err) ) # Assumption 2.5
-            @assert( λ_1N <= μ2_lb ) # Assumption 3.2
             Res = λ_1N * u_1N - Ω.H * u_1N
             dnorm_Res = decompose_dual_norm(Res, Ω1, Ω2, Ω∞, Ng, FD_grid)
-            c1 = gap_constant_1(μ2_lb, λ_1N)
-            c2 = gap_constant_2(μ2_lb, λ_1N)
-            est_ = estimator_eigenvector(c, c1, c2, λ_1N, dnorm_Res)
+            
+            # non-guaranteed estimation
+            c1_nongua = gap_constant_1(λ_2N, λ_1N)
+            c2_nongua = gap_constant_2(λ_2N, λ_1N)
+            println("Nb=($Nb), nongua gap const= $(c1_nongua) $(c2_nongua)")
+            
+            est_nongua = estimator_eigenvector(c, c1_nongua, c2_nongua, λ_1N, dnorm_Res)
+            estλ_nongua = estimator_eigenvalue(c, c1_nongua, dnorm_Res)
+            
+            # guaranteed estimation
+            c1_gua = gap_constant_1(μ2_lb, λ_1N)
+            c2_gua = gap_constant_2(μ2_lb, λ_1N)
+            @assert( λ_1N <= μ2_lb ) # Assumption 3.2
+            println("       guaran gap const= $(c1_gua) $(c2_gua)")
 
-            println("Nb=($Nb), gap const 1 $(c1) 2 $(c2)")
+            est_gua = estimator_eigenvector(c, c1_gua, c2_gua, λ_1N, dnorm_Res)
+            estλ_gua = estimator_eigenvalue(c, c1_gua, dnorm_Res)
         
             # Store results
             Herr_src[i,j], Hest_src[i,j] = Herr, est
-            Herr_eig[i,j], Hest_eig[i,j] = Herr_, est_
-            eigv_err[i,j], eigv_est[i,j] = (λ_1N - μ1_FD), estimator_eigenvalue(c, c1, dnorm_Res)
+            Herr_eig[i,j] = Herr_
+            eigv_err[i,j] = λ_1N - μ1_FD
+            Hest_eig_gua[i,j] = est_gua
+            eigv_est_gua[i,j] = estλ_gua
+            Hest_eig_nongua[i,j] = est_nongua
+            eigv_est_nongua[i,j] = estλ_nongua
         end
     end
 
@@ -122,9 +139,11 @@ if !isfile("$(output_dir)/res_main.json")
     data["Herr_src"] = Herr_src
     data["Herr_eig"] = Herr_eig
     data["Hest_src"] = Hest_src
-    data["Hest_eig"] = Hest_eig
     data["eigv_err"] = eigv_err
-    data["eigv_est"] = eigv_est
+    data["Hest_eig_gua"] = Hest_eig_gua
+    data["eigv_est_gua"] = eigv_est_gua
+    data["Hest_eig_nongua"] = Hest_eig_nongua
+    data["eigv_est_nongua"] = eigv_est_nongua
     data["V"] = V.(FD_grid[1])
 
     # write to file
@@ -141,9 +160,11 @@ nb_tests = length(Nb_list)
 Herr_src = reshape(data["Herr_src"], (nb_ℓ, nb_tests))
 Hest_src = reshape(data["Hest_src"], (nb_ℓ, nb_tests))
 Herr_eig = reshape(data["Herr_eig"], (nb_ℓ, nb_tests))
-Hest_eig = reshape(data["Hest_eig"], (nb_ℓ, nb_tests))
 eigv_err = reshape(data["eigv_err"], (nb_ℓ, nb_tests))
-eigv_est = reshape(data["eigv_est"], (nb_ℓ, nb_tests))
+Hest_eig_gua = reshape(data["Hest_eig_gua"], (nb_ℓ, nb_tests))
+eigv_est_gua = reshape(data["eigv_est_gua"], (nb_ℓ, nb_tests))
+Hest_eig_nongua = reshape(data["Hest_eig_nongua"], (nb_ℓ, nb_tests))
+eigv_est_nongua = reshape(data["eigv_est_nongua"], (nb_ℓ, nb_tests))
 
 # ##################
 # Plot results
@@ -164,39 +185,43 @@ PyPlot.savefig("$(figure_dir)/src_pb.pdf")
 PyPlot.close()
 
 # Error convergence for eigval problem wrt Hermite basis size
-# Figure is splitted in two parts
-fig, (ax1, ax2) = PyPlot.subplots(nrows=2, ncols=1, sharex=true,
+function plot_estimation(Hest_,est_,filename)
+
+    # Figure is splitted in two parts
+    fig, (ax1, ax2) = PyPlot.subplots(nrows=2, ncols=1, sharex=true,
                                   figsize=(4.0,4.2), gridspec_kw=["height_ratios"=>[1.5,1.5]])
 
-nb_size = size(Nb_list,1)
-PyPlot.xticks(1:3:nb_size, Nb_list[1:3:nb_size])
-PyPlot.xlabel(L"N"*" basis functions")
+    nb_size = size(Nb_list,1)
+    PyPlot.xticks(1:3:nb_size, Nb_list[1:3:nb_size])
+    PyPlot.xlabel(L"N"*" basis functions")
 
-# Upper part: Eigenvectors
-ax1.plot(Herr_eig[1,:], marker="x", markevery=3, label=L"$\|\varphi_1 - \varphi_{1N}\|_A$")
-for i in 1:nb_ℓ-1
-    if (i==3) continue end
-    ax1.plot(Hest_eig[i,:], marker="^", markevery=3, label=L"est. $\ell=%$(2*vec_ℓ[i])$")
+    # Upper part: Eigenvectors
+    ax1.plot(Herr_eig[1,:], marker="x", markevery=3, label=L"$\|\varphi_1 - \varphi_{1N}\|_A$")
+    for i in 1:nb_ℓ-1
+        if (i==3) continue end
+        ax1.plot(Hest_[i,:], marker="^", markevery=3, label=L"est. $\ell=%$(2*vec_ℓ[i])$")
+    end
+    ax1.set_yscale("log")
+    ax1.grid(color="#EEEEEE")
+    ax1.legend()
+
+    # Lower part: Eigenvalues
+    ax2.plot(eigv_err[1,:], marker="s", markevery=3, linestyle=:dashed, label=L"$\lambda_{1N} - \lambda_1$")
+    for i in 1:nb_ℓ-1
+        if (i==3) continue end
+        ax2.plot(est_[i,:], marker="*", markevery=3, linestyle=:dashed, label=L"est. $\ell=%$(2*vec_ℓ[i])$")
+    end
+    ax2.set_yscale("log")
+    ax2.grid(color="#EEEEEE")
+    ax2.legend()
+
+    PyPlot.tight_layout()
+    PyPlot.subplots_adjust(wspace=0, hspace=0)
+    PyPlot.savefig(filename)
+    PyPlot.close()
 end
-ax1.set_yscale("log")
-ax1.grid(color="#EEEEEE")
-ax1.legend()
 
-# Lower part: Eigenvalues
-ax2.plot(eigv_err[1,:], marker="s", markevery=3, linestyle=:dashed, label=L"$\lambda_{1N} - \lambda_1$")
-for i in 1:nb_ℓ-1
-    if (i==3) continue end
-    ax2.plot(eigv_est[i,:], marker="*", markevery=3, linestyle=:dashed, label=L"est. $\ell=%$(2*vec_ℓ[i])$")
-end
-ax2.set_yscale("log")
-ax2.grid(color="#EEEEEE")
-ax2.legend()
-
-PyPlot.tight_layout()
-PyPlot.subplots_adjust(wspace=0, hspace=0)
-PyPlot.savefig("$(figure_dir)/eig_pb.pdf")
-PyPlot.close()
-
-
-
+# Plot for guaranteed and non-guaranteed estimation separately
+plot_estimation(Hest_eig_gua,eigv_est_gua,"$(figure_dir)/eig_pb_gua.pdf")
+plot_estimation(Hest_eig_nongua,eigv_est_nongua,"$(figure_dir)/eig_pb_nongua.pdf")
 
