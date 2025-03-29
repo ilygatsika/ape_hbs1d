@@ -19,14 +19,14 @@ if !isfile("$(output_dir)/res_main.json")
     z1 = 1.0          # atomic charge at -R
     z2 = 1.0          # atomic charge at +R
     V = V_Gigi(0.5)   # atomic potential
-    σ  = 4.0          # shifts
+    σ  = 8.0          # shifts
     σ1 = 3.0
     σ2 = 3.0
     σ∞ = 1.0
     K  = 17          # size of spectral basis
 
     # partition overlap size is 2*ℓ
-    vec_ℓ = [0.1, 0.3, 0.5, 0.8, 0.9]
+    vec_ℓ = [0.1, 0.3, 0.8]
     nb_ℓ = length(vec_ℓ)
 
     # ###############################
@@ -73,11 +73,13 @@ if !isfile("$(output_dir)/res_main.json")
         cH = 1/sqrt(Vlow + σ) # use the practical one for H2+
         local c = subdomain_constant((Ω, Ω1, Ω2, Ω∞), ℓ, cH, FD_grid)
         println("ℓ=($ℓ) λ1=($μ1_FD) cH=($cH) Vlow=($Vlow) C=($c)")
+        # Note: if λ1 is close to one it means that the shift σ
+        # is optimal
        
         # use guaranteed lb of λ_2 (instead of λ_2N) (Remark 3.4)
         μs_AB, μs_A, μs_B = weyl_lower_bound(V,z1,z2,R,σ,Ng,FD_grid)
         μ2_lb = μs_A[1] + μs_B[2]
-        println("Weyl's lower bound: λ2_lb=($μ2_lb) < λ2=($μ2_FD)")
+        println("Weyl's lower bound (guaranteed): λ2_lb=($μ2_lb) < λ2=($μ2_FD)")
         @assert( μ2_lb <= μ2_FD ) # Assumption 3.2
 
         # Vary Hermite basis size
@@ -104,6 +106,7 @@ if !isfile("$(output_dir)/res_main.json")
             # non-guaranteed estimation
             c1_nongua = gap_constant_1(λ_2N, λ_1N)
             c2_nongua = gap_constant_2(λ_2N, λ_1N)
+            println("Practical bound (non-guaranteed): λ2N=($λ_2N) <? λ2=($μ2_FD)")
             println("Nb=($Nb), nongua gap const= $(c1_nongua) $(c2_nongua)")
             
             est_nongua = estimator_eigenvector(c, c1_nongua, c2_nongua, λ_1N, dnorm_Res)
@@ -172,10 +175,8 @@ eigv_est_nongua = reshape(data["eigv_est_nongua"], (nb_ℓ, nb_tests))
 
 # Error convergence for source problem wrt Hermite basis size
 PyPlot.plot(Nb_list, Herr_src[1,:], marker="x", markevery=3, label=L"$\|u-u_N\|_A$")
-for i in 1:nb_ℓ-1
-    if (i != 3)
-        PyPlot.plot(Nb_list, Hest_src[i,:], marker="^", markevery=3, label=L"est. $\ell=%$(2*vec_ℓ[i])$")
-    end
+for i in 1:nb_ℓ
+    PyPlot.plot(Nb_list, Hest_src[i,:], marker="^", markevery=3, label=L"est. $\ell=%$(2*vec_ℓ[i])$")
 end
 PyPlot.xlabel(L"N"*" basis functions")
 PyPlot.yscale("log")
@@ -197,8 +198,7 @@ function plot_estimation(Hest_,est_,filename)
 
     # Upper part: Eigenvectors
     ax1.plot(Herr_eig[1,:], marker="x", markevery=3, label=L"$\|\varphi_1 - \varphi_{1N}\|_A$")
-    for i in 1:nb_ℓ-1
-        if (i==3) continue end
+    for i in 1:nb_ℓ
         ax1.plot(Hest_[i,:], marker="^", markevery=3, label=L"est. $\ell=%$(2*vec_ℓ[i])$")
     end
     ax1.set_yscale("log")
@@ -207,8 +207,7 @@ function plot_estimation(Hest_,est_,filename)
 
     # Lower part: Eigenvalues
     ax2.plot(eigv_err[1,:], marker="s", markevery=3, linestyle=:dashed, label=L"$\lambda_{1N} - \lambda_1$")
-    for i in 1:nb_ℓ-1
-        if (i==3) continue end
+    for i in 1:nb_ℓ
         ax2.plot(est_[i,:], marker="*", markevery=3, linestyle=:dashed, label=L"est. $\ell=%$(2*vec_ℓ[i])$")
     end
     ax2.set_yscale("log")

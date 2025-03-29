@@ -377,7 +377,7 @@ function dual_norm_spectral(modes, u; inf=0)
 
     sL,sU = 0,0
     for i in 1:K-1
-        s = (u'abs.(v[:,i]))^2
+        s = (u'v[:,i])^2
         sU += s
         sL += 1.0/λ[i] * s
     end
