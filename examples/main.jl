@@ -19,7 +19,7 @@ if !isfile("$(output_dir)/res_main.json")
     z1 = 1.0          # atomic charge at -R
     z2 = 1.0          # atomic charge at +R
     V = V_Gigi(0.5)   # atomic potential
-    σ  = 8.0          # shifts
+    σ  = 4.0          # shifts
     σ1 = 3.0
     σ2 = 3.0
     σ∞ = 1.0

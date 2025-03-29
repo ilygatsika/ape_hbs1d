@@ -23,12 +23,12 @@ if !isfile("$(output_dir)/res_adapt$(tag).json")
     # ###################
     R  = 1.0                # -R and +R atomic positions
     V = V_Gigi(0.5)         # atomic potential
-    σ  = 9.0                # shifts so that -8 + shift > 0
+    σ  = 7.0                # shifts so that -8 + shift > 0
     σ1 = 4.0
     σ2 = 4.0
     σ∞ = 1.0
-    K  = 17               # size of spectral basis
-    ℓ  = 1.9              # size of partition overlap
+    K  = 17                 # size of spectral basis
+    ℓ  = 0.3                # size of partition overlap
 
     # ###############################
     # Discretisation basis parameters
