@@ -190,7 +190,7 @@ function plot_estimation(Hest_,est_,filename)
 
     # Figure is splitted in two parts
     fig, (ax1, ax2) = PyPlot.subplots(nrows=2, ncols=1, sharex=true,
-                                  figsize=(4.0,4.2), gridspec_kw=["height_ratios"=>[1.5,1.5]])
+                                  figsize=(3.5,4.2), gridspec_kw=["height_ratios"=>[1.5,1.5]])
 
     nb_size = size(Nb_list,1)
     PyPlot.xticks(1:3:nb_size, Nb_list[1:3:nb_size])
